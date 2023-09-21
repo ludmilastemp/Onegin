@@ -1,14 +1,10 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <assert.h>
-#include <sys\stat.h>
-#include <string.h>
+#include "STL_file_open.h"
 
-#include "fread.h"
+static int CountNumberOfLines (char* text, size_t size);
 
-static void SplitIntoLines (File* file);   // readelf -t file.o
+static void SplitIntoLines (struct File* file);
 
-char* stl_Fread (File* file)
+char* STL_Fread (struct File* file)
 {
     assert (file);
 
@@ -16,11 +12,6 @@ char* stl_Fread (File* file)
 
     file->fp = fopen (file->name, "r");
     assert (file->fp);
-    if (file->fp == nullptr)
-    {
-        fprintf(stderr, "Open file error: %s\n", strerror(errno));
-        return nullptr;
-    }
 
     fstat (fileno (file->fp), &buff);
 
@@ -31,8 +22,10 @@ char* stl_Fread (File* file)
 
     file->size = fread (file->text, sizeof (char), file->size, file->fp);
 
-    /**
-     *
+    /** Ñhecking for the correctness of entering the last line
+     * If the last line does not end with \n,
+     * add \n to the end of the buffer and
+     * increases the file size by 1
      */
     if (*(file->text + file->size - 1) != '\n')
     {
@@ -46,18 +39,15 @@ char* stl_Fread (File* file)
     return file->text;
 }
 
-String* stl_SplitFileIntoLines (File* file, const char* name)
+String* STL_SplitFileIntoLines (File* file, const char* name)
 {
     assert (file);
 
     file->name = name;
 
-    file->text = stl_Fread (file);
+    file->text = STL_Fread (file);
 
-    for (size_t i = 0; i <= file->size; i++)
-    {
-        if ((file->text)[i] == '\n') (file->nLines)++;
-    }
+    file->nLines = CountNumberOfLines (file->text, file->size);
 
     file->strings = (String*) calloc (file->nLines + 1, sizeof (String));
     assert (file->strings);
@@ -65,6 +55,18 @@ String* stl_SplitFileIntoLines (File* file, const char* name)
     SplitIntoLines (file);
 
     return file->strings;
+}
+
+static int CountNumberOfLines (char* text, size_t size)
+{
+    size_t numberOfLines = 0;
+
+    for (size_t i = 0; i <= size; i++)
+    {
+        if (text[i] == '\n') numberOfLines++;
+    }
+
+    return numberOfLines;
 }
 
 static void SplitIntoLines (File* file)
