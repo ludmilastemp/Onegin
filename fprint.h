@@ -5,6 +5,6 @@
 
 void FPrintText (FILE* fp, String* strings, size_t nLines);
 
-void FPrintString (FILE* fp, char* str);
+void FPrintString (FILE* fp, const char* str);
 
 #endif

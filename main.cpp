@@ -16,6 +16,7 @@ int main()
     }
 
     FILE* fp = fopen ("onegin2.0.txt", "w");
+    assert (fp);
 
     qsort (file.strings, file.nLines, sizeof (String), Compare);
     FPrintText (fp, file.strings, file.nLines);
@@ -25,8 +26,7 @@ int main()
 
     fprintf (fp, "%s", file.text);
 
-    free (file.text);
-    free (file.strings);
+    STL_Fclose (&file);
 
     return 0;
 }

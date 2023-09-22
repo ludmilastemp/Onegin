@@ -1,6 +1,6 @@
 #include "fprint.h"
 
-void FPrintString (FILE* fp, char* str)
+void FPrintString (FILE* fp, const char* str)
 {
     size_t i = 0;
 

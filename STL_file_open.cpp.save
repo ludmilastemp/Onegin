@@ -61,11 +61,9 @@ static int CountNumberOfLines (char* text, size_t size)
 {
     size_t numberOfLines = 0;
 
-    char* ptr = text;
-    while (ptr != text + size - 1)
+    for (size_t i = 0; i <= size; i++)
     {
-        ptr = strchr (ptr + 1, '\n');
-        numberOfLines++;
+        if (text[i] == '\n') numberOfLines++;
     }
 
     return numberOfLines;
@@ -83,12 +81,9 @@ static void SplitIntoLines (File* file)
     line++;
     pos++;
 
-    char* ptr = file->text;
-
     for (; line < file->nLines + 1; line++)
     {
-        ptr = strchr (ptr + 1, '\n');
-        pos = ptr - file->text;
+        while (*(file->text + pos) != '\n') pos++;
 
         (file->strings + line)    ->str = (file->text + pos + 1);
         (file->strings + line - 1)->len = (file->strings + line)->str
@@ -104,13 +99,13 @@ static void SplitIntoLines (File* file)
 
 int STL_Fclose (struct File* file)
 {
-    free (file->text);
-    free (file->strings);
-
-    file->name    = 0;
-    file->fp      = nullptr;
-    file->text    = nullptr;
-    file->size    = 0;
-    file->nLines  = 0;
-    file->strings = nullptr;
+    free (file.text);
+    free (file.strings);
+    
+    file name;
+    file* fp;
+    file* text = 0;
+    size_t size;
+    size_t nLines;
+    String* strings;
 }

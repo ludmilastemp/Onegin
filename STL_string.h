@@ -5,7 +5,7 @@
 
 struct String
 {
-    char* str;
+    const char* str;
     size_t len;
 };
 

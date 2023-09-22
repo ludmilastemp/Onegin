@@ -1,10 +1,10 @@
 #include <stdio.h>
 
-const int Debug = 0;
+const int Debug = 1;
 
 #define $ if (Debug)
 
-const int sizeData = 5;
+const int sizeData = 20;
 
 void PrintArray (int* data, int left, int right);
 
@@ -14,11 +14,12 @@ void qsort (int* data, int left, int right);
 
 void Swap (int* a, int* b);
 
-int main ()
+int main ()                        // not correct
 {
     $ printf ("\n\n\n\n\n\n\n\n\n\n");
 
-    int data[sizeData] = {5, 5, 5, 5, 5};
+    int data[sizeData] = {5,9,87,-3,0,-78,-2222,65,
+                        -3,785,1,9,0,0,-2222,2222,3,68,452,1};
 
     printf ("\n\n Initial array: \n");
     PrintArray (data, 0, sizeData - 1);
@@ -67,7 +68,11 @@ int Partition (int* data, int left, int right)
             right--;
         }
 
-        $ printf ("I Swap: mid = %d  left = %d, right = %d\n", mid, left, right);
+        if (left >= right) break;
+
+
+        $ printf ("I Swap: mid = %d  left = %d, right = %d %d | %d\n",
+                  mid, left, right, data[left], data[right]);
 
         Swap (&data[left], &data[right]);
 
@@ -97,15 +102,15 @@ void PrintArray (int* data, int left, int right)
 {
     size_t i = 0;
 
-    for (; i < sizeData; ++i) printf ("%-3d", i);
-    printf ("\n");
+    $ for (; i < sizeData; ++i) printf ("%-3d", i);
+    $ printf ("\n");
 
     i = 0;
-    for (; i < left;  ++i) printf ("%-3d" , data[i] );
-    printf ("\033[102;1m" "%-3d" "\033[0m", data[i++]);
-    for (; i < right; ++i) printf ("%-3d" , data[i]);
-    if (i == right) printf ("\033[41;1m"  "%-3d" "\033[0m", data[i++] );
-    for (; i < sizeData;     ++i) printf ("%-3d" , data[i]);
+    for (; i < left;  ++i) printf ("%-6d" , data[i] );
+    printf ("\033[102;1m" "%-6d" "\033[0m", data[i++]);
+    for (; i < right; ++i) printf ("%-6d" , data[i]);
+    if (i == right) printf ("\033[41;1m"  "%-6d" "\033[0m", data[i++] );
+    for (; i < sizeData;     ++i) printf ("%-6d" , data[i]);
     printf ("\n");
 }
 
